@@ -1,6 +1,5 @@
 package com.akshat.udemycoursemovieapp
 
-import android.health.connect.datatypes.units.Length
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -10,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,9 +43,8 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.akshat.udemycoursemovieapp.ui.theme.PurpleGrey40
+import com.akshat.udemycoursemovieapp.navigation.MovieNavigation
 import com.akshat.udemycoursemovieapp.ui.theme.UdemyCourseMovieAppTheme
-import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
 
@@ -56,7 +53,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MyApp {
-                MainContent()
+               MovieNavigation()
             }
         }
     }
@@ -66,22 +63,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MyApp(content: @Composable () -> Unit) {
     UdemyCourseMovieAppTheme {
-        Scaffold(modifier = Modifier,
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text("Moviess")
-                    },
-                    colors = TopAppBarDefaults.smallTopAppBarColors(
-                        containerColor = Color.Magenta
-                    )
-                )
-            }
-        ) { it ->
-            Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                content()
-            }
-        }
+        content()
     }
 }
 
@@ -174,7 +156,7 @@ fun MovieRow(movie: String, onItemClick: (String) -> Unit) {
             .padding(4.dp)
             .fillMaxWidth()
             .height(130.dp)
-            .clickable{
+            .clickable {
                 onItemClick(movie)
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
@@ -210,6 +192,6 @@ fun MovieRow(movie: String, onItemClick: (String) -> Unit) {
 @Composable
 fun GreetingPreview() {
     MyApp {
-        MainContent()
+        MovieNavigation()
     }
 }
