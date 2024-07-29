@@ -30,7 +30,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -38,13 +37,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.akshat.udemycoursemovieapp.model.Movie
+import com.akshat.udemycoursemovieapp.model.getMovies
 import com.akshat.udemycoursemovieapp.navigation.MovieNavigation
 import com.akshat.udemycoursemovieapp.ui.theme.UdemyCourseMovieAppTheme
+import com.akshat.udemycoursemovieapp.widgets.MovieRow
 
 class MainActivity : ComponentActivity() {
 
@@ -121,17 +122,7 @@ fun AddAppBar() {
 
 @Composable
 fun MainContent(
-    movieList: List<String> = listOf(
-        "Avatar",
-        "300",
-        "Harry Potter",
-        "Life",
-        "Love",
-        "Hate",
-        "Avatar",
-        "300",
-        "Harry Potter"
-    )
+    movieList: List<Movie> = getMovies()
 ) {
     Column(modifier = Modifier.padding(12.dp)) {
         val context = LocalContext.current
@@ -149,43 +140,7 @@ fun MainContent(
 
 }
 
-@Composable
-fun MovieRow(movie: String, onItemClick: (String) -> Unit) {
-    Card(
-        modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .height(130.dp)
-            .clickable {
-                onItemClick(movie)
-            },
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        elevation = CardDefaults.cardElevation(6.dp)
-    )
-    {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Start
-        ) {
-            Surface(
-                modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RectangleShape,
-                tonalElevation = 4.dp
-            ) {
-                Icon(
-                    imageVector = Icons.Default.AccountBox,
-                    contentDescription = "Movie Image"
-                )
 
-            }
-            Text(text = movie)
-        }
-
-    }
-
-}
 
 
 @Preview(showBackground = true)

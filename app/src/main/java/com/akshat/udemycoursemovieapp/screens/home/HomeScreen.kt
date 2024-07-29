@@ -17,8 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.akshat.udemycoursemovieapp.MovieRow
+import com.akshat.udemycoursemovieapp.model.Movie
+import com.akshat.udemycoursemovieapp.model.getMovies
 import com.akshat.udemycoursemovieapp.navigation.MoviewScreens
+import com.akshat.udemycoursemovieapp.widgets.MovieRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,17 +47,7 @@ fun HomeScreen(navController: NavController){
 @Composable
 fun MainContent(
     navController: NavController,
-    movieList: List<String> = listOf(
-        "Avatar",
-        "300",
-        "Harry Potter",
-        "Life",
-        "Love",
-        "Hate",
-        "Avatar",
-        "300",
-        "Harry Potter"
-    )
+    movieList: List<Movie> = getMovies()
 ) {
     Column(modifier = Modifier.padding(12.dp)) {
         val context = LocalContext.current
@@ -63,7 +55,7 @@ fun MainContent(
             items(items = movieList) {
                 MovieRow(movie = it){movie ->
                     Toast.makeText(context, "Clikced on $movie", Toast.LENGTH_SHORT).show()
-                    navController.navigate(route = MoviewScreens.DetailsScreen.name)
+                    navController.navigate(route = MoviewScreens.DetailsScreen.name + "/$movie")
                 }
             }
         }
