@@ -24,21 +24,20 @@ import com.akshat.udemycoursemovieapp.widgets.MovieRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController){
-    Scaffold(modifier = Modifier,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text("Moviess")
-                },
-                colors = TopAppBarDefaults.smallTopAppBarColors(
-                    containerColor = Color.Magenta
+fun HomeScreen(navController: NavController) {
+    Scaffold(modifier = Modifier, topBar = {
+        TopAppBar(
+            title = {
+                Text("Movies",
+                    color = Color.White
                 )
+            }, colors = TopAppBarDefaults.smallTopAppBarColors(
+                containerColor = Color.DarkGray
             )
-        }
-    ) { it ->
+        )
+    }) { it ->
         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-           // content()
+            // content()
             MainContent(navController = navController)
         }
     }
@@ -46,15 +45,13 @@ fun HomeScreen(navController: NavController){
 
 @Composable
 fun MainContent(
-    navController: NavController,
-    movieList: List<Movie> = getMovies()
+    navController: NavController, movieList: List<Movie> = getMovies()
 ) {
     Column(modifier = Modifier.padding(12.dp)) {
         val context = LocalContext.current
         LazyColumn {
             items(items = movieList) {
-                MovieRow(movie = it){movie ->
-                    Toast.makeText(context, "Clikced on $movie", Toast.LENGTH_SHORT).show()
+                MovieRow(movie = it) { movie ->
                     navController.navigate(route = MoviewScreens.DetailsScreen.name + "/$movie")
                 }
             }

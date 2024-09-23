@@ -20,11 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,13 +31,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.akshat.udemycoursemovieapp.model.Movie
 import com.akshat.udemycoursemovieapp.model.getMovies
 
 @Composable
-fun MovieRow(movie: Movie = getMovies()[0],
-             onItemClick: (String) -> Unit = { }) {
+fun MovieRow(
+    movie: Movie = getMovies()[0], onItemClick: (String) -> Unit = { }
+) {
     var expanded by remember {
         mutableStateOf(false)
     }
@@ -49,14 +46,12 @@ fun MovieRow(movie: Movie = getMovies()[0],
         modifier = Modifier
             .padding(4.dp)
             .fillMaxWidth()
-            // .height(130.dp)
             .clickable {
                 onItemClick(movie.id)
             },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = CardDefaults.cardElevation(6.dp)
-    )
-    {
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
@@ -68,32 +63,40 @@ fun MovieRow(movie: Movie = getMovies()[0],
                 shape = RectangleShape,
                 tonalElevation = 4.dp
             ) {
-//                /*Icon(
-//                    imageVector = Icons.Default.AccountBox,
-//                    contentDescription = "Movie Image"
-//                )*/
-                Image(painter = rememberImagePainter(data = movie.images[0]),
-                    contentDescription = "Movie Poster")
+                Image(
+                    painter = rememberAsyncImagePainter(model = movie.images[0]),
+                    contentDescription = "Movie Poster"
+                )
 
             }
             Column(modifier = Modifier.padding(4.dp)) {
-                Text(text = movie.title,
-                    style = MaterialTheme.typography.bodyLarge)
-                Text(text = "Director: ${movie.title}",
-                    style = MaterialTheme.typography.bodyMedium)
-                Text(text = "Released: ${movie.year}",
-                    style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = movie.title, style = MaterialTheme.typography.bodyLarge
+                )
+                Text(
+                    text = "Director: ${movie.title}", style = MaterialTheme.typography.bodyMedium
+                )
+                Text(
+                    text = "Released: ${movie.year}", style = MaterialTheme.typography.bodyMedium
+                )
 
                 AnimatedVisibility(visible = expanded) {
                     Column() {
-                        Text( buildAnnotatedString {
-                            withStyle(style = SpanStyle(color = Color.DarkGray,
-                                fontSize = 13.sp)){
+                        Text(buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray, fontSize = 13.sp
+                                )
+                            ) {
                                 append("Plot : ")
                             }
-                            withStyle(style = SpanStyle(color = Color.DarkGray,
-                                fontSize = 13.sp,
-                                fontWeight = FontWeight.Bold)){
+                            withStyle(
+                                style = SpanStyle(
+                                    color = Color.DarkGray,
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            ) {
                                 append(movie.plot)
                             }
                         })
@@ -102,19 +105,19 @@ fun MovieRow(movie: Movie = getMovies()[0],
 
 
 
-                Icon(imageVector = if(expanded) Icons.Filled.KeyboardArrowUp else
-                    Icons.Filled.KeyboardArrowDown,
+                Icon(
+                    imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                     contentDescription = "Down Arrow",
                     modifier = Modifier
                         .size(25.dp)
                         .clickable {
                             expanded = !expanded
                         },
-                    tint = Color.DarkGray)
+                    tint = Color.DarkGray
+                )
             }
 
         }
-
 
 
     }

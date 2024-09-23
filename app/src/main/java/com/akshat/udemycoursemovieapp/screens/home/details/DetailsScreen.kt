@@ -28,9 +28,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import coil.compose.rememberImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.akshat.udemycoursemovieapp.model.Movie
 import com.akshat.udemycoursemovieapp.model.getMovies
 import com.akshat.udemycoursemovieapp.widgets.MovieRow
@@ -42,23 +43,22 @@ fun DetailsScreen(navController: NavController, movieId: String?) {
     val newMovieList = getMovies().filter { movie -> movie.id == movieId }
 
     Scaffold(topBar = {
-        TopAppBar(
-            title = {
-                Text(
-                    newMovieList[0].title.toString()
-                )
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = Color.Magenta
-            ),
-            navigationIcon = {
-                Icon(imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Arrow Back",
-                    modifier = Modifier.clickable {
-                        navController.popBackStack()
-                    })
-            }
-        )
+        TopAppBar(title = {
+            Text(
+                newMovieList[0].title.toString(), color = Color.White
+            )
+        }, colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = Color.DarkGray
+        ), navigationIcon = {
+            Icon(
+                imageVector = Icons.Default.ArrowBack,
+                contentDescription = "Arrow Back",
+                modifier = Modifier.clickable {
+                    navController.popBackStack()
+                },
+                tint = Color.White
+            )
+        })
     }) { it ->
         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
             Surface(
@@ -98,8 +98,10 @@ private fun HorrizontalScrollableImageView(newMovieList: List<Movie>) {
                 elevation = CardDefaults.cardElevation(5.dp)
             ) {
                 Image(
-                    painter = rememberImagePainter(data = image),
-                    contentDescription = "Movie Poster"
+                    painter = rememberAsyncImagePainter(model = image),
+                    contentDescription = "Movie Poster",
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.None
                 )
 
             }
